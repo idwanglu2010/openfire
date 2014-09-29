@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Broadcast Service Plugin Readme</title>
+    <style type="text/css">
+        BODY {
+            font-size : 100%;
+        }
+        BODY, TD, TH {
+            font-family : tahoma, verdana, arial, helvetica, sans-serif;
+            font-size : 0.8em;
+        }
+        H2 {
+             font-size : 10pt;
+             font-weight : bold;
+        }
+        A:hover {
+            text-decoration : none;
+        }
+        H1 {
+            font-family : tahoma, arial, helvetica, sans-serif;
+            font-size : 1.4em;
+            font-weight: bold;
+            border-bottom : 1px #ccc solid;
+            padding-bottom : 2px;
+        }
+
+        TT {
+            font-family : courier new;
+            font-weight : bold;
+            color : #060;
+        }
+        PRE {
+            font-family : courier new;
+            font-size : 100%;
+        }
+        #datatable TH {
+            color : #fff;
+            background-color : #2A448C;
+            text-align : left;
+        }
+        #datatable TD {
+            background-color : #FAF6EF;
+        }
+        #datatable .name {
+            background-color : #DCE2F5;
+        }
+    </style>
+</head>
+<body>
+
+<h1>
+Broadcast Service Plugin Readme
+</h1>
+
+<h2>Overview</h2>
+
+<p>
+The Broadcast Service Plugin provides the ability to push message to user,room,all users and group by sending an http request to the server.
+This plugin's functionality is useful for applications that need to administer users outside of the Openfire admin console.
+
+</p>
+
+<h2>Installation</h2>
+
+<p>Copy broadcastservice.jar into the plugins directory of your Openfire server. The
+plugin will then be automatically deployed. To upgrade to a new version, copy the new
+broadcastservice.jar file over the existing file.</p>
+
+<h2>Configuration</h2>
+
+Access to the service is restricted with a "secret" that can be viewed and
+set from the Broadcast Service page in the Openfire admin console.  This page is
+located on the admin console under "Server" and then "Server Settings".
+This should really only be considered weak security. The plugin was initially written with the assumption that http access to the Openfire service was
+only available to trusted machines. In the case of the plugin's author, a web application running on the same server as
+Openfire makes the request.
+if you need to use this plugin,you should set the property on the "Server Settings"
+plugin.broadcastservice.enabled=true
+plugin.broadcastservice.secret="your server secret"
+
+<h2>Using the Plugin</h2>
+
+To administer users, submit HTTP requests to the broadcastservice service.
+The service address is [hostname]plugins/broadcastService/broadcastservice. For example,
+if your server name is "example.com", the URL is http://example.com/plugins/broadcastService/broadcastservice<p>
+
+The following parameters can be passed into the request:<p>
+
+<div id="datatable">
+<table cellpadding="3" cellspacing="1" border="0" width="900">
+<tr>
+    <th colspan=2>Name</th><th>Description</th>
+</tr>
+<tr>
+    <td class="name">type</td><td>Required</td><td>
+    Possible values are 0, 1, 2, 3.</td>
+</tr>
+<tr>
+    <td class="name">secret</td><td>Required</td>
+    <td>The secret key that allows access to the Broadcast Service.</td>
+</tr>
+<tr>
+    <td class="name">jid</td><td>Required</td>
+    <td>The user's jid.</td>
+</tr>
+<tr>
+    <td class="name">body</td><td>Required</td>
+    <td>The message will be pushed.</td>
+</tr>
+<tr>
+    <td class="name">from</td><td>Optional if type equal 1 then Required</td>
+    <td>The jid where mark message from.</td>
+</tr>
+
+</table><p>
+
+
+<p><b>Sample HTML</b><p>
+
+The following example push message to user 123456789@example.com
+
+<ul>
+<form>
+<textarea cols=65 rows=3 wrap=virtual>
+http://example.com:9090/plugins/broadcastService/broadcastservice?jid=123456789@example.com&body=test&secret=ids2009&type=0
+</textarea>
+</form>
+</ul>
+
+The following example push message to room 1@cofhistory.example.com
+
+<ul>
+<form>
+<textarea cols=65 rows=3 wrap=virtual>
+http://example.com:9090/plugins/broadcastService/broadcastservice?jid=1@cofhistory.example.com&body=test&secret=ids2009&type=1
+</textarea>
+</form>
+</ul>
+
+The following example push message to all users
+
+<ul>
+<form>
+<textarea cols=65 rows=4 wrap=virtual>
+http://example.com:9090/plugins/broadcastService/broadcastservice?jid=all@example.com&body=test&secret=ids2009&type=2
+</textarea>
+</form>
+</ul>
+
+The following example push message to the group group1@example.com, group must exist,add user 123456789@example.com must in this group, from is required
+
+<ul>
+<form>
+<textarea cols=65 rows=4 wrap=virtual>
+http://example.com:9090/plugins/broadcastService/broadcastservice?jid=group1@example.com&body=test&secret=ids2009&type=3&from=123456789@example.com
+</textarea>
+</form>
+</ul>
+
+<br><br>
+* When sending double characters (Chinese/Japanese/Korean etc) you should URLEncode the string as utf8.<br>
+In Java this is done like this<br>
+URLEncoder.encode(username, "UTF-8"));
+<br>If the strings are encoded incorrectly, double byte characters will look garbeled in the Admin Console.
+
+
+<h2>Server Reply</h2>
+
+The server will reply to all Broadcast Service requests with an XML result page.
+If the request was processed successfully the return will be a "result" element with a text body of "OK"
+If the request was unsuccessful, the return will be an "error" element with a text body of one of the following error strings.
+<p>
+
+
+<div id="datatable">
+<table cellpadding="3" cellspacing="1" border="0" width="900">
+<tr>
+    <th >Error String</th><th>Description</th>
+</tr>
+<tr>
+    <td class="name">IllegalArgumentException</td>
+    <td>one of the parameters passed in to the Broadcast Service was bad.</td>
+</tr>
+<tr>
+    <td class="name">RequestNotAuthorised</td>
+    <td>The supplied secret does not match the secret specified in the Admin Console or the requester is not a valid IP address.</td>
+</tr>
+<tr>
+    <td class="name">BroadcastServiceDisabled</td>
+    <td>The Broadcast Service is currently set to disabled in the Admin Console.</td>
+</tr>
+
+</table><p>
+
+
+</body>
+</html>

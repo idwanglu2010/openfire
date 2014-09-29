@@ -1,0 +1,1 @@
+launchable-activity: name='com.skynet.config.MainActivity'  label='SkynetConfig' icon=''

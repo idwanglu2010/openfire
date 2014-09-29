@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin>
+    <class>com.skynet.openfire.plugin.BroadcastServicePlugin</class>
+    <name>Broadcast Service</name>
+    <description>Allows broadcast message to user or  group users or all users via HTTP requests.</description>
+    <author>Nick Wang</author>
+    <version>1.0.0</version>
+    <date>26/09/2014</date>
+    <minServerVersion>3.9.0</minServerVersion>
+	<!-- Admin console entries -->
+    <adminconsole>
+        <!-- More on this below -->
+    </adminconsole>
+</plugin>
