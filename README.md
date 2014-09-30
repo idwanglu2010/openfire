@@ -15,7 +15,7 @@
 
 6、在Console窗口输出日志，Admin console listening at http://example.com:9090
 
-7、浏览器打开http://example.com:9090进行配置
+7、浏览器打开http://example.com:9090 进行配置
 
 
 另外说明：
