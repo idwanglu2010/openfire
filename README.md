@@ -10,3 +10,7 @@
 5、Run
 6、在Console窗口输出日志，Admin console listening at http://example.com:9090
 7、浏览器打开http://example.com:9090进行配置
+
+
+另外说明：
+在build目录下，使用ant plugins可以部署安装插件
