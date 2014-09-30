@@ -20,3 +20,8 @@
 
 另外说明：
 在build目录下，使用ant plugins可以部署安装插件
+
+
+详细安装部署、插件开发等还请移步openfire官方文档：
+
+https://www.igniterealtime.org/projects/openfire/documentation.jsp
