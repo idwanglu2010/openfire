@@ -3,7 +3,7 @@
 ========
 1、check out 代码
 
-2、import Java Project 到Eclipse,import时选择copy to workspace
+2、import Java Project 到Eclipse,import时选择Copy projects into workspace
 
 3、打开cmd，到工程目录..\workspace\openfire\build下，输入命令ant,ant脚本会自动构建openfire,输出work和target目录
 
